@@ -62,8 +62,9 @@ namespace RealtimeCPURAMmonitor
             progressBar5.Maximum = (int)GetTotalMemoryInMBytes();
             label7.Text = string.Format("Ukupno memorije : {0}MB", GetTotalMemoryInMBytes());
             label10.Text = string.Format("CPU Model : {0}", GetCPUName());
-            label9.Text = string.Format("CPU Clock : {0}MHz", GetCPUSpeed());
+            label9.Text = string.Format("CPU Brzina : {0}MHz", GetCPUSpeed());
             label6.Text = string.Format("PC Hostname : {0}", Environment.MachineName);
+            label8.Text = string.Format("Operativni sistem : {0}",GetOSFriendlyName());
             
         }
 
@@ -108,7 +109,6 @@ namespace RealtimeCPURAMmonitor
         private void RAM_tick(object sender, EventArgs e) {
             int tmp_calc = (int)(GetTotalMemoryInMBytes()) - ((int)performanceCounter5.NextValue());
             label5.Text = String.Format("Memorija u upotrebi : {0}MB", tmp_calc);
-
             progressBar5.Value = tmp_calc;
             
         }
@@ -140,7 +140,32 @@ namespace RealtimeCPURAMmonitor
             }
             return clockSpeed;
         }
+        public static string GetOSFriendlyName()
+        {
+            string result = string.Empty;
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Caption FROM Win32_OperatingSystem");
+            foreach (ManagementObject os in searcher.Get())
+            {
+                result = os["Caption"].ToString();
+                break;
+            }
+            return result;
+        }
 
-      
+        private void button2_Click(object sender, EventArgs e)
+        {
+            start_prime95();
+        }
+        private int start_prime95() {
+            ProcessStartInfo prime = new ProcessStartInfo();
+            prime.FileName = "prime95.exe";
+            if (Process.Start(prime) != null)
+            {
+                return 0;
+            }
+            else {
+                return -1;
+            }
+        }
     }
 }
