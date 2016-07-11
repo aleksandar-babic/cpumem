@@ -65,7 +65,8 @@ namespace RealtimeCPURAMmonitor
             label9.Text = string.Format("CPU Brzina : {0}MHz", GetCPUSpeed());
             label6.Text = string.Format("PC Hostname : {0}", Environment.MachineName);
             label8.Text = string.Format("Operativni sistem : {0}",GetOSFriendlyName());
-            
+            toolTip1.SetToolTip(button4, "Pogledajte izvorni kod na BitBucket-u.");
+            toolTip2.SetToolTip(button3, "Pogledajte moj fejsbuk profil.");
         }
 
 
@@ -166,6 +167,16 @@ namespace RealtimeCPURAMmonitor
             else {
                 return -1;
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://facebook.com/allexki");
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://bitbucket.org/aleksandarbabic/cpumem");
         }
     }
 }
