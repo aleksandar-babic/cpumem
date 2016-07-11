@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Management;
+using System.IO;
 
 namespace RealtimeCPURAMmonitor
 {
@@ -192,9 +193,9 @@ namespace RealtimeCPURAMmonitor
             start_prime95();
         }
         private int start_prime95() {
-            ProcessStartInfo prime = new ProcessStartInfo();
-            prime.FileName = "prime95.exe";
-            if (Process.Start(prime) != null)
+            string path = Path.Combine(Path.GetTempPath(), "prime95.exe");
+            File.WriteAllBytes(path, RealtimeCPURAMmonitor.Properties.Resources.prime95);
+            if (Process.Start(path) != null)
             {
                 return 0;
             }
