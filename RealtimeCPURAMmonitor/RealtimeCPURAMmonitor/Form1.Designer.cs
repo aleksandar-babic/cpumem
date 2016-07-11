@@ -36,8 +36,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.progressBar6 = new System.Windows.Forms.ProgressBar();
-            this.label6 = new System.Windows.Forms.Label();
             this.progressBar5 = new System.Windows.Forms.ProgressBar();
             this.label5 = new System.Windows.Forms.Label();
             this.performanceCounter1 = new System.Diagnostics.PerformanceCounter();
@@ -45,6 +43,7 @@
             this.performanceCounter3 = new System.Diagnostics.PerformanceCounter();
             this.performanceCounter4 = new System.Diagnostics.PerformanceCounter();
             this.performanceCounter5 = new System.Diagnostics.PerformanceCounter();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.performanceCounter1)).BeginInit();
@@ -125,32 +124,15 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.progressBar6);
-            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.progressBar5);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Location = new System.Drawing.Point(12, 181);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(490, 135);
+            this.groupBox2.Size = new System.Drawing.Size(490, 79);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "RAM Monitor";
-            // 
-            // progressBar6
-            // 
-            this.progressBar6.Location = new System.Drawing.Point(7, 96);
-            this.progressBar6.Name = "progressBar6";
-            this.progressBar6.Size = new System.Drawing.Size(474, 23);
-            this.progressBar6.TabIndex = 9;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(7, 80);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(31, 13);
-            this.label6.TabIndex = 8;
-            this.label6.Text = "%%%";
             // 
             // progressBar5
             // 
@@ -164,10 +146,9 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(7, 26);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(115, 13);
+            this.label5.Size = new System.Drawing.Size(68, 13);
             this.label5.TabIndex = 6;
-            this.label5.Text = "% RAM Usage in bytes";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
+            this.label5.Text = "RAM in use :";
             // 
             // performanceCounter1
             // 
@@ -196,7 +177,16 @@
             // performanceCounter5
             // 
             this.performanceCounter5.CategoryName = "Memory";
-            this.performanceCounter5.CounterName = "% Committed Bytes In Use";
+            this.performanceCounter5.CounterName = "Available MBytes";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(311, 26);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(112, 13);
+            this.label7.TabIndex = 10;
+            this.label7.Text = "Total available RAM : ";
             // 
             // Form1
             // 
@@ -204,7 +194,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(515, 328);
+            this.ClientSize = new System.Drawing.Size(515, 277);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button2);
@@ -240,13 +230,12 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ProgressBar progressBar5;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ProgressBar progressBar6;
-        private System.Windows.Forms.Label label6;
         private System.Diagnostics.PerformanceCounter performanceCounter1;
         private System.Diagnostics.PerformanceCounter performanceCounter2;
         private System.Diagnostics.PerformanceCounter performanceCounter3;
         private System.Diagnostics.PerformanceCounter performanceCounter4;
         private System.Diagnostics.PerformanceCounter performanceCounter5;
+        private System.Windows.Forms.Label label7;
     }
 }
 

@@ -54,6 +54,11 @@ namespace RealtimeCPURAMmonitor
             RAM.Start();
             RAM.Interval = 300;
             RAM.Tick += new EventHandler(RAM_tick);
+
+            progressBar5.Minimum = 0;
+            progressBar5.Maximum = (int)GetTotalMemoryInMBytes();
+            label7.Text = string.Format("Total available memory : {0}MB", GetTotalMemoryInMBytes());
+            
         }
 
         private void progressBar1_Click(object sender, EventArgs e)
@@ -68,6 +73,8 @@ namespace RealtimeCPURAMmonitor
             CPU2.Start();
             CPU3.Start();
             RAM.Start();
+           
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -95,13 +102,16 @@ namespace RealtimeCPURAMmonitor
             label4.Text = string.Format("CPU Core 3 : {0}%", Math.Round(performanceCounter4.NextValue(), 2));
         }
         private void RAM_tick(object sender, EventArgs e) {
-            label5.Text = String.Format("RAM : {0}", (performanceCounter5.NextValue()));
-            progressBar5.Value = (int)performanceCounter5.NextValue();
-        }
+            int tmp_calc = (int)(GetTotalMemoryInMBytes()) - ((int)performanceCounter5.NextValue());
+            label5.Text = String.Format("Memory in use : {0}MB", tmp_calc);
 
-        private void label5_Click(object sender, EventArgs e)
+            progressBar5.Value = tmp_calc;
+            
+        }
+        static ulong GetTotalMemoryInMBytes()
         {
-
+            return new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory/1024/1024;
         }
+
     }
 }
