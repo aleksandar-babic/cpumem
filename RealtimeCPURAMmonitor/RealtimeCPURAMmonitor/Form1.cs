@@ -20,7 +20,8 @@ namespace RealtimeCPURAMmonitor
         Timer CPU2 = new Timer();
         Timer CPU3 = new Timer();
         Timer RAM = new Timer();
-        int clockSpeed;
+        Timer[] CPU = new Timer[4];
+        int clockSpeed,core = 0;
         string procName;
         bool button1_clicked = false;
 
@@ -38,22 +39,42 @@ namespace RealtimeCPURAMmonitor
         
         private void Form1_Load(object sender, EventArgs e)
         {
-            CPU0.Start();
-            CPU0.Interval = 300;
-            CPU0.Tick += new EventHandler(CPU0_tick); 
-
-            CPU1.Start();
-            CPU1.Interval = 300;
-            CPU1.Tick += new EventHandler(CPU1_tick);
-
-            CPU2.Start();
-            CPU2.Interval = 300;
-            CPU2.Tick += new EventHandler(CPU2_tick);
-
-            CPU3.Start();
-            CPU3.Interval = 300;
-            CPU3.Tick += new EventHandler(CPU3_tick);
-
+            GetCpuCore();
+            if (core > 0)
+            {
+                CPU0.Start();
+                CPU0.Interval = 300;
+                CPU0.Tick += new EventHandler(CPU0_tick);
+            }
+            if (core > 1)
+            {
+                CPU1.Start();
+                CPU1.Interval = 300;
+                CPU1.Tick += new EventHandler(CPU1_tick);
+            }
+            else {
+                label2.Text = "CPU Jezgro 1 - NEMA";
+            }
+            if (core > 2)
+            {
+                CPU2.Start();
+                CPU2.Interval = 300;
+                CPU2.Tick += new EventHandler(CPU2_tick);
+            }
+            else
+            {
+                label3.Text = "CPU Jezgro 2 - NEMA";
+            }
+            if (core > 3)
+            {
+                CPU3.Start();
+                CPU3.Interval = 300;
+                CPU3.Tick += new EventHandler(CPU3_tick);
+            }
+            else
+            {
+                label4.Text = "CPU Jezgro 3 - NEMA";
+            }
             RAM.Start();
             RAM.Interval = 300;
             RAM.Tick += new EventHandler(RAM_tick);
@@ -89,7 +110,7 @@ namespace RealtimeCPURAMmonitor
                 CPU3.Start();
                 RAM.Start();
                 button1_clicked = false;
-                button1.Text = "Zaustavi praćenje";
+                button1.Text = "Zaustavi praćenje";     
             }
         }     
         private void CPU0_tick(object sender, EventArgs e) {
@@ -140,6 +161,19 @@ namespace RealtimeCPURAMmonitor
                 }
             }
             return clockSpeed;
+        }
+        private int GetCpuCore() {
+            /*  using (ManagementObjectSearcher win32Proc = new ManagementObjectSearcher("select * from Win32_Processor"))
+             {
+                 foreach (ManagementObject obj in win32Proc.Get())
+                 {
+                     core += Convert.ToInt32(obj["NumberOfProcessors"].ToString());
+
+                 }
+             }
+             return core; */
+            core = Environment.ProcessorCount;
+            return core;
         }
         public static string GetOSFriendlyName()
         {
