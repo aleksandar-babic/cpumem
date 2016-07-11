@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-
+using System.Management;
 
 namespace RealtimeCPURAMmonitor
 {
@@ -20,7 +20,10 @@ namespace RealtimeCPURAMmonitor
         Timer CPU2 = new Timer();
         Timer CPU3 = new Timer();
         Timer RAM = new Timer();
-        
+        int clockSpeed;
+        string procName;
+        bool button1_clicked = false;
+
 
         public Form1()
         {
@@ -57,53 +60,54 @@ namespace RealtimeCPURAMmonitor
 
             progressBar5.Minimum = 0;
             progressBar5.Maximum = (int)GetTotalMemoryInMBytes();
-            label7.Text = string.Format("Total available memory : {0}MB", GetTotalMemoryInMBytes());
+            label7.Text = string.Format("Ukupno memorije : {0}MB", GetTotalMemoryInMBytes());
+            label10.Text = string.Format("CPU Model : {0}", GetCPUName());
+            label9.Text = string.Format("CPU Clock : {0}MHz", GetCPUSpeed());
+            label6.Text = string.Format("PC Hostname : {0}", Environment.MachineName);
             
         }
 
-        private void progressBar1_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            CPU0.Start();
-            CPU1.Start();
-            CPU2.Start();
-            CPU3.Start();
-            RAM.Start();
-           
-            
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            CPU0.Stop();
-            CPU1.Stop();
-            CPU2.Stop();
-            CPU3.Stop();
-            RAM.Stop();
-        }
-        
+            if (!button1_clicked)
+            {
+                CPU0.Stop();
+                CPU1.Stop();
+                CPU2.Stop();
+                CPU3.Stop();
+                RAM.Stop();
+                button1_clicked = true;
+                button1.Text = "Pokreni praćenje";         
+            }
+            else {
+                CPU0.Start();
+                CPU1.Start();
+                CPU2.Start();
+                CPU3.Start();
+                RAM.Start();
+                button1_clicked = false;
+                button1.Text = "Zaustavi praćenje";
+            }
+        }     
         private void CPU0_tick(object sender, EventArgs e) {
-            label1.Text = string.Format("CPU Core 0 : {0}%",Math.Round(performanceCounter1.NextValue(),2));
+            label1.Text = string.Format("CPU Jezgro 0 : {0}%",Math.Round(performanceCounter1.NextValue(),2));
         }
         private void CPU1_tick(object sender, EventArgs e)
         {
-            label2.Text = string.Format("CPU Core 1 : {0}%", Math.Round(performanceCounter2.NextValue(), 2));
+            label2.Text = string.Format("CPU Jezgro 1 : {0}%", Math.Round(performanceCounter2.NextValue(), 2));
         }
         private void CPU2_tick(object sender, EventArgs e)
         {
-            label3.Text = string.Format("CPU Core 2 : {0}%", Math.Round(performanceCounter3.NextValue(), 2));
+            label3.Text = string.Format("CPU Jezgro 2 : {0}%", Math.Round(performanceCounter3.NextValue(), 2));
         }
         private void CPU3_tick(object sender, EventArgs e)
         {
-            label4.Text = string.Format("CPU Core 3 : {0}%", Math.Round(performanceCounter4.NextValue(), 2));
+            label4.Text = string.Format("CPU Jezgro 3 : {0}%", Math.Round(performanceCounter4.NextValue(), 2));
         }
         private void RAM_tick(object sender, EventArgs e) {
             int tmp_calc = (int)(GetTotalMemoryInMBytes()) - ((int)performanceCounter5.NextValue());
-            label5.Text = String.Format("Memory in use : {0}MB", tmp_calc);
+            label5.Text = String.Format("Memorija u upotrebi : {0}MB", tmp_calc);
 
             progressBar5.Value = tmp_calc;
             
@@ -112,6 +116,31 @@ namespace RealtimeCPURAMmonitor
         {
             return new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory/1024/1024;
         }
+        private string GetCPUName()
+        {
+            using (ManagementObjectSearcher win32Proc = new ManagementObjectSearcher("select * from Win32_Processor"))
+            {
+                foreach (ManagementObject obj in win32Proc.Get())
+                {
+                    
+                    procName = obj["Name"].ToString();
+                }       
+            }
+            return procName;
+        } 
+        private int GetCPUSpeed()
+        {
+            using (ManagementObjectSearcher win32Proc = new ManagementObjectSearcher("select * from Win32_Processor"))
+            {
+                foreach (ManagementObject obj in win32Proc.Get())
+                {
+                    clockSpeed = Convert.ToInt32(obj["MaxClockSpeed"]);
 
+                }
+            }
+            return clockSpeed;
+        }
+
+      
     }
 }
